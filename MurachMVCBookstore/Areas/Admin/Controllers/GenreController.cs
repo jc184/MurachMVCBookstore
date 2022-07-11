@@ -15,7 +15,6 @@ namespace MurachMVCBookstore.Areas.Admin.Controllers
 
         public ViewResult Index()
         {
-            // clear any previous searches
             var search = new SearchData(TempData);
             search.Clear();
 
@@ -26,14 +25,12 @@ namespace MurachMVCBookstore.Areas.Admin.Controllers
             return View(genres);
         }
 
-        // add
         [HttpGet]
         public ViewResult Add() => View("Genre", new Genre());
 
         [HttpPost]
         public IActionResult Add(Genre genre)
         {
-            // server-side version of remote validation 
             var validate = new Validate(TempData);
             if (!validate.IsGenreChecked)
             {
@@ -50,7 +47,7 @@ namespace MurachMVCBookstore.Areas.Admin.Controllers
                 data.Save();
                 validate.ClearGenre();
                 TempData["message"] = $"{genre.Name} added to Genres.";
-                return RedirectToAction("Index");  // PRG pattern
+                return RedirectToAction("Index");
             }
             else
             {
@@ -58,20 +55,18 @@ namespace MurachMVCBookstore.Areas.Admin.Controllers
             }
         }
 
-        // edit
         [HttpGet]
         public ViewResult Edit(string id) => View("Genre", data.Get(id));
 
         [HttpPost]
         public IActionResult Edit(Genre genre)
         {
-            // no remote validation of genre id on edit
             if (ModelState.IsValid)
             {
                 data.Update(genre);
                 data.Save();
                 TempData["message"] = $"{genre.Name} updated.";
-                return RedirectToAction("Index");  // PRG pattern
+                return RedirectToAction("Index");
             }
             else
             {
@@ -79,16 +74,9 @@ namespace MurachMVCBookstore.Areas.Admin.Controllers
             }
         }
 
-        // delete
         [HttpGet]
         public IActionResult Delete(string id)
         {
-            // because cascading deletes are turned off when DbContext configured (so don't automatically
-            // delete books when delete genre), will get EF foreign key error if try to delete a genre that's
-            // associated with any books. Rather than catch and handle error, this code includes books when
-            // retrieving the genre to be deleted. Then, if there are any Book objects in the Books property,
-            // it redirects the user to the search results page so they can see said books. 
-
             var genre = data.Get(new QueryOptions<Genre>
             {
                 Includes = "Books",
@@ -110,21 +98,20 @@ namespace MurachMVCBookstore.Areas.Admin.Controllers
         [HttpPost]
         public IActionResult Delete(Genre genre)
         {
-            // no ModelState.IsValid check here bc there's no user input - 
-            // only GenreId and Name in hidden fields are posted from form. 
             data.Delete(genre);
             data.Save();
             TempData["message"] = $"{genre.Name} removed from Genres.";
             return RedirectToAction("Index");  // PRG pattern
         }
 
-        // view books by genre
-        public RedirectToActionResult ViewBooks(string id) => GoToBookSearchResults(id);
+        public RedirectToActionResult ViewBooks(string id)
+        {
+            RedirectToActionResult result = GoToBookSearchResults(id);
+            return result;
+        }
 
-        // private helper method
         private RedirectToActionResult GoToBookSearchResults(string id)
         {
-            // store genre search data in TempData and redirect
             var search = new SearchData(TempData)
             {
                 SearchTerm = id,
