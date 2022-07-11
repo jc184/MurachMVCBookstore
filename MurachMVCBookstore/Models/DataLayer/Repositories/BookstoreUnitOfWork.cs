@@ -7,8 +7,8 @@ namespace MurachMVCBookstore.Models.DataLayer.Repositories
         private BookstoreContext context { get; set; }
         public BookstoreUnitOfWork(BookstoreContext ctx) => context = ctx;
 
-        private IRepository<Book> bookData;
-        public IRepository<Book> Books
+        private Repository<Book> bookData;
+        public Repository<Book> Books
         {
             get
             {
@@ -18,8 +18,8 @@ namespace MurachMVCBookstore.Models.DataLayer.Repositories
             }
         }
 
-        private IRepository<Author> authorData;
-        public IRepository<Author> Authors
+        private Repository<Author> authorData;
+        public Repository<Author> Authors
         {
             get
             {
@@ -29,8 +29,8 @@ namespace MurachMVCBookstore.Models.DataLayer.Repositories
             }
         }
 
-        private IRepository<BookAuthor> bookauthorData;
-        public IRepository<BookAuthor> BookAuthors
+        private Repository<BookAuthor> bookauthorData;
+        public Repository<BookAuthor> BookAuthors
         {
             get
             {
@@ -40,8 +40,8 @@ namespace MurachMVCBookstore.Models.DataLayer.Repositories
             }
         }
 
-        private IRepository<Genre> genreData;
-        public IRepository<Genre> Genres
+        private Repository<Genre> genreData;
+        public Repository<Genre> Genres
         {
             get
             {
@@ -63,12 +63,11 @@ namespace MurachMVCBookstore.Models.DataLayer.Repositories
             }
         }
 
-        public void AddNewBookAuthors(Book book, int[] authorids)
+        public void LoadNewBookAuthors(Book book, int[] authorids)
         {
             foreach (int id in authorids)
             {
-                BookAuthor ba =
-                    new BookAuthor { BookId = book.BookId, AuthorId = id };
+                BookAuthor ba = new BookAuthor { Book = book, AuthorId = id };
                 BookAuthors.Insert(ba);
             }
         }
