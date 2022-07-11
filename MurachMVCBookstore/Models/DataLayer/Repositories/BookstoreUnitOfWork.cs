@@ -7,8 +7,8 @@ namespace MurachMVCBookstore.Models.DataLayer.Repositories
         private BookstoreContext context { get; set; }
         public BookstoreUnitOfWork(BookstoreContext ctx) => context = ctx;
 
-        private Repository<Book> bookData;
-        public Repository<Book> Books
+        private IRepository<Book> bookData;
+        public IRepository<Book> Books
         {
             get
             {
@@ -18,8 +18,8 @@ namespace MurachMVCBookstore.Models.DataLayer.Repositories
             }
         }
 
-        private Repository<Author> authorData;
-        public Repository<Author> Authors
+        private IRepository<Author> authorData;
+        public IRepository<Author> Authors
         {
             get
             {
@@ -29,8 +29,8 @@ namespace MurachMVCBookstore.Models.DataLayer.Repositories
             }
         }
 
-        private Repository<BookAuthor> bookauthorData;
-        public Repository<BookAuthor> BookAuthors
+        private IRepository<BookAuthor> bookauthorData;
+        public IRepository<BookAuthor> BookAuthors
         {
             get
             {
@@ -40,8 +40,8 @@ namespace MurachMVCBookstore.Models.DataLayer.Repositories
             }
         }
 
-        private Repository<Genre> genreData;
-        public Repository<Genre> Genres
+        private IRepository<Genre> genreData;
+        public IRepository<Genre> Genres
         {
             get
             {
