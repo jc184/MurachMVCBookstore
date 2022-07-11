@@ -8,7 +8,7 @@ namespace MurachMVCBookstore.Models.DomainModels
     {
         [StringLength(10)]
         [Required(ErrorMessage = "GenreId is required")]
-        [Remote("Check Genre", "Validation", "")]
+        [Remote("CheckGenre", "Validation", "Admin")] // include 'Admin' area name
         public string GenreId { get; set; }
 
         [StringLength(25)]
